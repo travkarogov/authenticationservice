@@ -15,7 +15,12 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
+        <maven.compiler.release>11</maven.compiler.release>
+        <sonar.projectKey>travkarogov_authservice</sonar.projectKey>
+        <sonar.organization>travkarogov</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>bdd2c3507afa6da50118a6c9e287666a16579668</sonar.login>
     </properties>
 
     <dependencies>
@@ -144,6 +149,19 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- AMQP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!-- Mail validation -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
         <!-- Spring Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -155,13 +173,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Mail validation -->
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.2</version>
         </dependency>
 
     </dependencies>

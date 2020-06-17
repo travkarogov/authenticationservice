@@ -17,8 +17,8 @@ import twitsec.authenticationservice.service.RegistrationService;
 public class RegistrationController {
     private final RegistrationService registrationService;
 
-    @PostMapping(path = "/")
-    public ResponseEntity<StringDto> registerNewUser(@RequestBody final User user) {
+    @PostMapping
+    public ResponseEntity<StringDto> register(@RequestBody final User user) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(StringDto.builder().string(registrationService.create(user)).build());
     }
 }

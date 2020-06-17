@@ -2,7 +2,7 @@ package twitsec.authenticationservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import twitsec.authenticationservice.communication.UserServiceCommunication;
+import twitsec.authenticationservice.communication.UserServiceRestCommunication;
 import twitsec.authenticationservice.model.LoginInput;
 import twitsec.authenticationservice.model.User;
 
@@ -13,26 +13,26 @@ import javax.mail.internet.InternetAddress;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserServiceCommunication userServiceCommunication;
+    private final UserServiceRestCommunication userServiceRestCommunication;
     private final HashComponent hashComponent;
     private final JwtTokenComponent jwtTokenComponent;
     private final TwoFactorComponent twoFactorComponent;
 
     public String login(final LoginInput input, final boolean skip2FA) throws Exception {
-        User verifiedUser = new User();
+        User user = new User();
         if (stringIsValidEmail(input.getEmail())) {
-            verifiedUser = findAccountByEmail(input.getEmail());
+            user = findAccountByEmail(input.getEmail());
         }
 
-        if (!hashComponent.passwordCheck(input.getPassword(), verifiedUser.getPassword())){
+        if (!hashComponent.passwordCheck(input.getPassword(), user.getPassword())){
             throw new Exception("Password invalid");
         }
 
         if (skip2FA) {
-            return jwtTokenComponent.createJwt(verifiedUser);
+            return jwtTokenComponent.createJwt(user);
         } else {
-            if (twoFactorComponent.validateGoogleAuthenticationCode(verifiedUser.getId(), input.getCode())) {
-                return jwtTokenComponent.createJwt(verifiedUser);
+            if (twoFactorComponent.validateGoogleAuthenticationCode(user.getId(), input.getCode())) {
+                return jwtTokenComponent.createJwt(user);
             } else
                 throw new Exception("2FA code invalid");
         }
@@ -40,22 +40,22 @@ public class AuthService {
 
     public String refreshAccessToken(final String accessToken) throws Exception {
         if (jwtTokenComponent.validateJwt(accessToken)) {
-            final User user = userServiceCommunication.findUserById(jwtTokenComponent.getUserIdFromToken(accessToken));
+            final User user = userServiceRestCommunication.findUserById(jwtTokenComponent.getUserIdFromToken(accessToken));
             return jwtTokenComponent.createJwt(user);
         } else throw new Exception("Invalid token");
     }
 
     private User findAccountByEmail(final String emailAddress) throws Exception {
-        User user = userServiceCommunication.findUserByEmail(emailAddress.toLowerCase());
+        User user = userServiceRestCommunication.findUserByEmail(emailAddress.toLowerCase());
         if(user.getEmail() == null){
             throw new Exception("Email invalid");
         }
-        return user ;
+        return user;
     }
 
-    private boolean stringIsValidEmail(final String userName) {
+    private boolean stringIsValidEmail(final String email) {
         try {
-            new InternetAddress(userName).validate();
+            new InternetAddress(email).validate();
             return true;
         } catch (AddressException ex) {
             return false;

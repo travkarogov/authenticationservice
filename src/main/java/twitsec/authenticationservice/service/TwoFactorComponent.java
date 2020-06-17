@@ -15,14 +15,13 @@ import twitsec.authenticationservice.model.User;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class TwoFactorComponent {
     private final GoogleAuthenticator googleAuthenticator;
 
-    String createTOTP(User user) throws WriterException {
+    String createTOTP(final User user) throws WriterException {
         try {
             final GoogleAuthenticatorKey key = googleAuthenticator.createCredentials(String.valueOf(user.getId()));
 
@@ -42,7 +41,7 @@ public class TwoFactorComponent {
         }
     }
 
-    boolean validateGoogleAuthenticationCode(Integer userId, int authCode) {
+    boolean validateGoogleAuthenticationCode(final Integer userId, final int authCode) {
         return googleAuthenticator.authorizeUser(userId.toString(), authCode);
     }
 
