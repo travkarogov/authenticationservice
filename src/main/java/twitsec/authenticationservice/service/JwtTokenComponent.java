@@ -35,6 +35,19 @@ public class JwtTokenComponent {
         return builder.compact();
     }
 
+    public String createCommunicationJwt(final User user){
+        final Key signingKey = new SecretKeySpec(DatatypeConverter.parseBase64Binary(SECRET_KEY), SignatureAlgorithm.HS256.getJcaName());
+        final JwtBuilder builder = Jwts.builder()
+                .setId(String.valueOf(new SecureRandom().nextInt()))
+                .claim("role", user.getRole())
+                .setSubject("TwitSecToken")
+                .setIssuer("TWITSEC_TOKEN_SERVICE")
+                .signWith(signingKey)
+                .setExpiration(new Date(System.currentTimeMillis() + 60000L));
+
+        return builder.compact();
+    }
+
     boolean validateJwt(final String jwt) {
         try{
             Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY)).parseClaimsJws(jwt.replace("Bearer", "").trim()).getBody();

@@ -18,7 +18,7 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public ResponseEntity<StringDto> register(@RequestBody final User user) throws Exception {
+    public ResponseEntity<StringDto> register(@RequestBody final User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(StringDto.builder().string(registrationService.create(user)).build());
     }
 }

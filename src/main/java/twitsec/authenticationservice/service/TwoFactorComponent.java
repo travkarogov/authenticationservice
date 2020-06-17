@@ -11,6 +11,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import twitsec.authenticationservice.model.User;
+import twitsec.authenticationservice.service.exception.QRCodeException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,7 +22,7 @@ import java.util.Base64;
 public class TwoFactorComponent {
     private final GoogleAuthenticator googleAuthenticator;
 
-    String createTOTP(final User user) throws WriterException {
+    String createTOTP(final User user) {
         try {
             final GoogleAuthenticatorKey key = googleAuthenticator.createCredentials(String.valueOf(user.getId()));
 
@@ -37,7 +38,7 @@ public class TwoFactorComponent {
 
             return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
         } catch (WriterException | IOException ex) {
-            throw new WriterException("Generating the QR-Code went wrong.");
+            throw new QRCodeException("Couldn't generate QR code");
         }
     }
 

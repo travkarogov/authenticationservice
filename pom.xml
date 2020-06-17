@@ -118,7 +118,7 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.nimbusds</groupId>
+            <groupId>com.nimbusnimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>7.9</version>
         </dependency>

@@ -20,4 +20,8 @@ public class User {
     private Role role;
 
     private Profile profile;
+
+    public User(Role role) {
+        this.role = role;
+    }
 }

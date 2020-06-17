@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import twitsec.authenticationservice.communication.UserServiceRestCommunication;
 import twitsec.authenticationservice.model.Role;
 import twitsec.authenticationservice.model.User;
-import twitsec.authenticationservice.exception.EmailExistsException;
-import twitsec.authenticationservice.exception.InputInvalidException;
+import twitsec.authenticationservice.service.exception.*;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ public class RegistrationService {
     private final HashComponent hashComponent;
     private final TwoFactorComponent twoFactorComponent;
 
-    public String create(final User user) throws Exception {
+    public String create(final User user) {
         validateNewUserAccountData(user);
 
         user.setPassword(hashComponent.hashPassword(user.getPassword()));
@@ -27,7 +26,7 @@ public class RegistrationService {
         return twoFactorComponent.createTOTP(createdUser);
     }
 
-    private void validateNewUserAccountData(final User user) throws Exception {
+    private void validateNewUserAccountData(final User user) {
         if (user.getEmail() == null
                 || user.getProfile().getUsername() == null
                 || user.getPassword() == null) {
