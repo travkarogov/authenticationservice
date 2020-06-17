@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import twitsec.authenticationservice.communication.UserServiceRestCommunication;
 import twitsec.authenticationservice.model.Role;
 import twitsec.authenticationservice.model.User;
-import twitsec.authenticationservice.service.exception.EmailExistsException;
-import twitsec.authenticationservice.service.exception.InputInvalidException;
+import twitsec.authenticationservice.exception.EmailExistsException;
+import twitsec.authenticationservice.exception.InputInvalidException;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package twitsec.authenticationservice.service.exception;
+package twitsec.authenticationservice.exception;
 
 import lombok.NoArgsConstructor;
 

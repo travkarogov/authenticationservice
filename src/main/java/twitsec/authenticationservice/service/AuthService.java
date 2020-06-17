@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import twitsec.authenticationservice.communication.UserServiceRestCommunication;
 import twitsec.authenticationservice.model.LoginInput;
 import twitsec.authenticationservice.model.User;
-import twitsec.authenticationservice.service.exception.EmailInvalidException;
-import twitsec.authenticationservice.service.exception.PasswordInvalidException;
-import twitsec.authenticationservice.service.exception.TokenInvalidException;
-import twitsec.authenticationservice.service.exception.TwoFactorInvalidException;
+import twitsec.authenticationservice.exception.EmailInvalidException;
+import twitsec.authenticationservice.exception.PasswordInvalidException;
+import twitsec.authenticationservice.exception.TokenInvalidException;
+import twitsec.authenticationservice.exception.TwoFactorInvalidException;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
