@@ -10,8 +10,8 @@ import twitsec.authenticationservice.model.User;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
+import java.security.SecureRandom;
 import java.util.Date;
-import java.util.Random;
 
 @Component
 public class JwtTokenComponent {
@@ -22,7 +22,7 @@ public class JwtTokenComponent {
     public String createJwt(final User user) {
         final Key signingKey = new SecretKeySpec(DatatypeConverter.parseBase64Binary(SECRET_KEY), SignatureAlgorithm.HS256.getJcaName());
         final JwtBuilder builder = Jwts.builder()
-                .setId(String.valueOf(new Random().nextInt()))
+                .setId(String.valueOf(new SecureRandom().nextInt()))
                 .claim("userId", user.getId())
                 .claim("role", user.getRole())
                 .claim("email", user.getEmail())
@@ -45,12 +45,6 @@ public class JwtTokenComponent {
     }
 
     int getUserIdFromToken(final String token){
-        try{
-            return JWT.decode(token).getClaim("userId").asInt();
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-            return 0;
-        }
+        return JWT.decode(token).getClaim("userId").asInt();
     }
 }

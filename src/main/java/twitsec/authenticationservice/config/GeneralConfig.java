@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import twitsec.authenticationservice.repository.CredentialRepository;
 
-import javax.management.MXBean;
-
 @Configuration
 @RequiredArgsConstructor
 public class GeneralConfig {

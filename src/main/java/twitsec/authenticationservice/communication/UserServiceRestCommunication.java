@@ -10,18 +10,17 @@ import twitsec.authenticationservice.model.User;
 public class UserServiceRestCommunication {
 
     private final RestTemplate restTemplate;
-    private final String URI = "http://localhost:49502/users";
+    private static final String uri = "http://localhost:49502/users";
 
     public User findUserById(int userId){
-        return restTemplate.getForObject(URI + "/" + userId, User.class);
+        return restTemplate.getForObject(uri + "/" + userId, User.class);
     }
 
     public User findUserByEmail(String email){
-        return restTemplate.getForObject(URI + "/email?email=" + email, User.class);
+        return restTemplate.getForObject(uri + "/email?email=" + email, User.class);
     }
 
     public User save(User user){
-        User createdUser = restTemplate.postForObject(URI + "/create", user, User.class);
-        return createdUser;
+        return restTemplate.postForObject(uri + "/create", user, User.class);
     }
 }

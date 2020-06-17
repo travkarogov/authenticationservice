@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import twitsec.authenticationservice.communication.UserServiceRestCommunication;
 import twitsec.authenticationservice.model.Role;
 import twitsec.authenticationservice.model.User;
+import twitsec.authenticationservice.service.exception.EmailExistsException;
+import twitsec.authenticationservice.service.exception.InputInvalidException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,13 +31,13 @@ public class RegistrationService {
         if (user.getEmail() == null
                 || user.getProfile().getUsername() == null
                 || user.getPassword() == null) {
-            throw new Exception("Please enter email, username and password");
+            throw new InputInvalidException("Please enter email, username and password");
         }
 
         User userDatabase = userServiceRestCommunication.findUserByEmail(user.getEmail());
 
         if (userDatabase != null) {
-            throw new Exception(String.format("Email address '%s' already exists", user.getEmail()));
+            throw new EmailExistsException(String.format("Email address '%s' already exists", user.getEmail()));
         }
     }
 }

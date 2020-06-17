@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 import twitsec.authenticationservice.communication.UserServiceRestCommunication;
 import twitsec.authenticationservice.model.LoginInput;
 import twitsec.authenticationservice.model.User;
+import twitsec.authenticationservice.service.exception.EmailInvalidException;
+import twitsec.authenticationservice.service.exception.PasswordInvalidException;
+import twitsec.authenticationservice.service.exception.TokenInvalidException;
+import twitsec.authenticationservice.service.exception.TwoFactorInvalidException;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -18,14 +22,14 @@ public class AuthService {
     private final JwtTokenComponent jwtTokenComponent;
     private final TwoFactorComponent twoFactorComponent;
 
-    public String login(final LoginInput input, final boolean skip2FA) throws Exception {
+    public String login(final LoginInput input, final boolean skip2FA) {
         User user = new User();
         if (stringIsValidEmail(input.getEmail())) {
             user = findAccountByEmail(input.getEmail());
         }
 
         if (!hashComponent.passwordCheck(input.getPassword(), user.getPassword())){
-            throw new Exception("Password invalid");
+            throw new PasswordInvalidException("Password invalid");
         }
 
         if (skip2FA) {
@@ -34,21 +38,21 @@ public class AuthService {
             if (twoFactorComponent.validateGoogleAuthenticationCode(user.getId(), input.getCode())) {
                 return jwtTokenComponent.createJwt(user);
             } else
-                throw new Exception("2FA code invalid");
+                throw new TwoFactorInvalidException("2FA code invalid");
         }
     }
 
-    public String refreshAccessToken(final String accessToken) throws Exception {
+    public String refreshAccessToken(final String accessToken){
         if (jwtTokenComponent.validateJwt(accessToken)) {
             final User user = userServiceRestCommunication.findUserById(jwtTokenComponent.getUserIdFromToken(accessToken));
             return jwtTokenComponent.createJwt(user);
-        } else throw new Exception("Invalid token");
+        } else throw new TokenInvalidException("Invalid token");
     }
 
-    private User findAccountByEmail(final String emailAddress) throws Exception {
+    private User findAccountByEmail(final String emailAddress) {
         User user = userServiceRestCommunication.findUserByEmail(emailAddress.toLowerCase());
         if(user.getEmail() == null){
-            throw new Exception("Email invalid");
+            throw new EmailInvalidException("Email invalid");
         }
         return user;
     }

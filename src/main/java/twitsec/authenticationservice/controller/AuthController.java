@@ -15,12 +15,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<StringDto> login(@RequestBody final LoginInput input) throws Exception {
+    public ResponseEntity<StringDto> login(@RequestBody final LoginInput input) {
         return ResponseEntity.status(HttpStatus.OK).body(StringDto.builder().string(authService.login(input, false)).build());
     }
 
     @PostMapping("/renewToken")
-    public ResponseEntity<StringDto> renewAccessToken(@RequestBody final StringDto stringDto) throws Exception {
+    public ResponseEntity<StringDto> renewAccessToken(@RequestBody final StringDto stringDto) {
         return ResponseEntity.status(HttpStatus.OK).body(StringDto.builder().string(authService.refreshAccessToken(stringDto.getString())).build());
     }
 }
