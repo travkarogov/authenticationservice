@@ -43,7 +43,7 @@ public class JwtTokenComponent {
                 .setSubject("TwitSecToken")
                 .setIssuer("TWITSEC_TOKEN_SERVICE")
                 .signWith(signingKey)
-                .setExpiration(new Date(System.currentTimeMillis() + 60000L));
+                .setExpiration(new Date(System.currentTimeMillis() + 15000L));
 
         return builder.compact();
     }
