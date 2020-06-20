@@ -6,4 +6,6 @@ import twitsec.authenticationservice.entity.TOTP;
 public interface TOTPRepository extends CrudRepository<TOTP, Integer> {
 
     TOTP getTOTPByUserId(int id);
+
+    void deleteAllByUserId(int userId);
 }
